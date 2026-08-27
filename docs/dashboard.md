@@ -1,61 +1,61 @@
 # Staff dashboard
 
-Private application for WIM account managers and admins.
+Private app for WIM account managers and admins.
 
 **URL:** https://app.wim-marketing-agency.com
 
-## Who uses it
+## Users
 
-| Role | Typical work |
-|------|----------------|
+| Role | Usual work |
+|------|------------|
 | Account manager | Review drafts, check inbox, ask the bot for reports |
-| Admin | Connect OAuth, manage workspaces, run Mailchimp send with confirmation |
+| Admin | Connect OAuth, manage workspaces, confirm Mailchimp send |
 
-UI language is English. Help Centre content is available in English and Russian.
+UI language is English. Help content is English and Russian.
 
-## Main areas
+## Pages
 
 | Page | Purpose |
 |------|---------|
-| Dashboard | Today’s pending drafts, alerts, inbox, spend snapshot |
-| Workspaces | Client list, modules, connection status, IDs |
-| AI Chat | Same capabilities as the Telegram bot, in the browser |
+| Dashboard | Pending drafts, alerts, inbox, spend summary |
+| Workspaces | Clients, modules, connection status, IDs |
+| AI Chat | Browser chat with the same tools as Telegram |
 | Drafts | Approve or reject prepared emails and posts |
-| Content | Social / content variants awaiting review |
-| Inbox | Classified Gmail threads by client |
-| Meetings | Calendar context and pre-meeting notes |
-| Reminders | Operator reminders delivered in Telegram |
+| Content | Social drafts waiting for review |
+| Inbox | Gmail threads grouped by client |
+| Meetings | Calendar context and notes before calls |
+| Reminders | Reminders delivered in Telegram |
 | Jobs | Status of scheduled automations |
-| Alerts | Ads anomalies |
-| Activities | Event feed (drafts, job outcomes, approvals) |
-| Knowledge Base | Search client documents and help guides |
-| Help | Bilingual operator guide |
+| Alerts | Unusual ads metrics |
+| Activities | Feed of drafts, job results, approvals |
+| Knowledge Base | Search client files and help guides |
+| Help | Operator guide in EN and RU |
 
-## Connected services (by client)
+## Services by client
 
-Not every client uses every channel. Examples of how modules map:
+Modules are turned on per workspace. Common mappings:
 
-| Service | Typical use |
-|---------|-------------|
+| Service | Use |
+|---------|-----|
 | Google (Gmail, Drive, Calendar, GA4) | Inbox, files, meetings, traffic |
-| Meta Ads | Paid social performance for selected clients |
-| Google Ads | Search performance for selected clients |
-| Mailchimp | Email performance reports and guarded campaign actions |
-| Telegram | Health pings, alerts, chat commands for staff |
+| Meta Ads | Paid social metrics for selected clients |
+| Google Ads | Search metrics for selected clients |
+| Mailchimp | Email reports and confirmed campaign actions |
+| Telegram | Health pings, alerts, chat for staff |
 
-## Operator flow
+## Daily flow
 
-1. Morning health ping arrives in Telegram.
-2. Open **Drafts** and read each item fully.
-3. Approve only when the text and attachments are correct.
-4. Use **Inbox** or chat if a client thread needs attention.
-5. Ask chat or Telegram for ads / GA4 / Mailchimp summaries when preparing updates.
+1. Health ping arrives in Telegram in the morning.
+2. Open Drafts and read each item in full.
+3. Approve only when text and attachments look right.
+4. Use Inbox or chat when a client thread needs attention.
+5. Ask chat or Telegram for ads, GA4, or Mailchimp summaries when writing updates.
 
-Nothing client-facing leaves the system without an explicit approve (or an admin-confirmed Mailchimp action).
+Client-facing send needs an explicit approve, or an admin confirm for Mailchimp.
 
-## Telegram
+## Telegram examples
 
-Staff can use natural language or short commands, for example:
+Staff can type short requests such as:
 
 - show pending drafts
 - Mailchimp monthly report for a named client
@@ -63,4 +63,4 @@ Staff can use natural language or short commands, for example:
 - search Drive or Knowledge Base
 - set a reminder
 
-The bot mirrors the web chat tools. Final publish and send still respect the same approval rules.
+The bot uses the same tools as web chat. Publish and send still follow the approval rules above.

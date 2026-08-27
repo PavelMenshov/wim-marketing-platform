@@ -1,69 +1,72 @@
-# Architecture overview
+# Architecture
 
-## Two public surfaces
-
-WIM keeps brand and operations on different hosts.
+## Hosts
 
 | Host | Role |
 |------|------|
 | `www.wim-marketing-agency.com` | Marketing website |
 | `app.wim-marketing-agency.com` | Staff dashboard and OAuth callbacks |
 
-Operators never need the marketing CMS to approve a draft or check ads. Prospects never see the dashboard login.
+Staff use the app host for drafts, ads checks, and inbox. Prospects use the website only.
 
-## Runtime shape
+## App runtime
 
-```
+```text
 Browser / Telegram
         |
         v
    FastAPI app
-   - /web UI
-   - /api/v1 integrations
+   - web UI
+   - REST API
    - scheduled jobs
         |
    +----+----+
    |         |
 Postgres   Redis
-(pgvector) (cache, job history)
+(search)   (cache, job history)
 ```
 
-Integrations talk outbound to Google, Meta, Mailchimp, Voyage, and Claude. Credentials are stored encrypted per workspace.
+Outbound calls go to Google, Meta, Mailchimp, Voyage, and Claude. Credentials are encrypted per client workspace.
 
-## Workspace model
+## Workspaces
 
-Each client is a **workspace** with:
+Each client is a workspace. A workspace holds:
 
-- enabled modules (Gmail, Drive, Calendar, GA4, Meta Ads, Google Ads, Mailchimp, …)
-- account IDs where needed (ads customer id, GA4 property id)
-- OAuth or API credentials for that client context
+| Item | Examples |
+|------|----------|
+| Modules | Gmail, Drive, Calendar, GA4, Meta Ads, Google Ads, Mailchimp |
+| Account IDs | Ads customer id, GA4 property id |
+| Credentials | OAuth tokens or API keys for that client |
 
-Jobs and chat tools resolve the right credentials from the workspace before calling an external API.
+Jobs and chat tools load the matching credentials before they call an external API.
 
-## Daily automation
+## Scheduled jobs (Hong Kong time)
 
-Examples of scheduled work (Hong Kong time):
-
-| Job | Cadence | Purpose |
-|-----|---------|---------|
+| Job | When | Purpose |
+|-----|------|---------|
 | Morning briefing | Daily | Client snapshot for staff |
-| Health ping | Daily | Telegram status for the operator |
-| Token refresh | Every 30 min | Keep OAuth sessions alive |
-| Knowledge ingest | Nightly | Sync Drive docs into searchable chunks |
-| Inbox classifier | Interval | Label recent Gmail threads |
+| Health ping | Daily | Status message in Telegram |
+| Token refresh | Every 30 min | Keep OAuth sessions valid |
+| Knowledge ingest | Nightly | Index Drive docs for search |
+| Inbox classifier | On an interval | Label recent Gmail threads |
 | Performance alerts | Hourly | Flag unusual ads metrics |
-| Weekly / monthly reports | Cron | Client-facing performance packages |
+| Weekly / monthly reports | On cron | Performance packages for clients |
 
-Telegram receives health pings, alerts, digests, and draft reminders. The web dashboard is the place for careful review and approval.
+Telegram gets health pings, alerts, digests, and draft reminders. The web app is where staff review and approve.
 
-## AI usage
+## AI and search
 
-Claude prepares drafts, briefings, and chat replies. It can call tools for ads metrics, GA4, Mailchimp reports, Drive search, and knowledge search.
+| Tool | Used for |
+|------|----------|
+| Claude | Drafts, briefings, chat replies, tool calls for metrics and search |
+| Voyage | Embeddings for document search |
 
-Embeddings (Voyage) power semantic search over documents. Image-heavy Drive folders can be skipped so ingest focuses on PDFs and Docs until vision spend is intentional.
+Drive folders with many images can be skipped during ingest so indexing stays on PDFs and Docs.
 
-## Safety defaults
+## Defaults that protect clients
 
-- Drafts start as pending. Approve is required to send or publish.
-- Chat tools that read Mailchimp are read-only. Live send lives in an admin UI with confirmation.
-- Demo mode can run the full UI with fixtures when real ad accounts are not connected.
+| Default | Behavior |
+|---------|----------|
+| Drafts | Start as pending. Approve is required to send or publish. |
+| Mailchimp in chat | Read-only reports. Live send sits in an admin screen with confirm. |
+| Demo mode | Full UI with sample data when real ad accounts are not connected. |

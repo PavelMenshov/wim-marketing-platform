@@ -1,99 +1,92 @@
 # WIM Marketing Platform
 
-Case study and product overview for **WIM Marketing Agency**.
+Overview of the WIM Marketing Agency website and staff dashboard.
 
-This repository describes the public website and the internal staff dashboard. Application source stays private.
+The application source is private. This repo explains what the two surfaces do and how they fit together.
 
-| Surface | URL | Audience |
-|---------|-----|----------|
-| Marketing site | [wim-marketing-agency.com](https://www.wim-marketing-agency.com) | Clients and prospects |
-| Staff dashboard | [app.wim-marketing-agency.com](https://app.wim-marketing-agency.com) | Agency operators |
+## Links
 
----
+| Surface | URL | For |
+|---------|-----|-----|
+| Website | [wim-marketing-agency.com](https://www.wim-marketing-agency.com) | Clients and prospects |
+| Dashboard | [app.wim-marketing-agency.com](https://app.wim-marketing-agency.com) | Agency staff |
 
-## What the agency runs
+## Docs in this repo
 
-WIM Marketing Agency manages paid media, analytics, email, and client reporting. The platform has two layers:
+| Doc | Contents |
+|-----|----------|
+| [docs/website.md](docs/website.md) | Public marketing site |
+| [docs/dashboard.md](docs/dashboard.md) | Staff app pages and daily flow |
+| [docs/architecture.md](docs/architecture.md) | Hosts, stack, jobs, integrations |
 
-1. **Website** — brand presence, services, and contact.
-2. **Dashboard** — day-to-day operations for account managers: drafts, inbox, ads metrics, knowledge search, scheduled jobs, and Telegram notifications.
+## What WIM built
 
-Staff approve outbound content before anything reaches a client. The system prepares drafts and reports. People stay in control of send and publish actions.
+WIM Marketing Agency runs paid media, analytics, email, and client reporting. The platform has two parts:
 
----
+1. A **website** for brand, services, and contact.
+2. A **dashboard** for drafts, inbox, ads metrics, document search, scheduled jobs, and Telegram alerts.
 
-## Product map
+The system prepares drafts and reports. Staff approve before email or posts go out.
 
+## How the pieces connect
+
+```text
+Prospects / clients              Agency staff
+        |                              |
+        v                              v
+   Marketing website              Staff dashboard
+   (public pages)                 (login required)
+                                         |
+                          +--------------+--------------+
+                          |              |              |
+                       Google         Meta / Ads     Email + bot
+                       Gmail Drive    GA4            Mailchimp
+                       Calendar                      Telegram
 ```
-Clients / prospects          Agency staff
-        |                          |
-        v                          v
-  Marketing website          Staff dashboard
-  (public pages)             (login required)
-                                   |
-                    +--------------+--------------+
-                    |              |              |
-                 Google        Meta / Ads      Email CRM
-                 Workspace     Analytics       (Mailchimp)
-                 Gmail Drive   GA4             Telegram bot
-                 Calendar
-```
 
-More detail: [docs/architecture.md](docs/architecture.md), [docs/website.md](docs/website.md), [docs/dashboard.md](docs/dashboard.md).
+## Dashboard features
 
----
+| Area | What staff get |
+|------|----------------|
+| Workspaces | One space per client, with modules and account IDs |
+| Drafts | Review and approve emails or posts before send |
+| Inbox | Recent Gmail threads labeled by priority and tone |
+| Knowledge Base | Search client Drive files and help guides (EN / RU) |
+| Jobs | Morning briefings, health checks, token refresh, alerts |
+| Telegram | Same actions as web chat, plus alerts and reminders |
+| Connections | Google and Meta OAuth, credentials stored encrypted |
 
-## Dashboard highlights
+The in-app Help page is English and Russian. The rest of the UI is English.
 
-- **Workspaces** per client with module toggles (ads, analytics, email, Drive).
-- **Draft review** for Gmail, social, and email campaigns. Approve or reject before anything goes out.
-- **Inbox helpers** that label recent Gmail threads by priority and tone.
-- **Knowledge Base** search over client Drive docs and built-in help guides (English and Russian).
-- **Scheduled jobs** for morning briefings, health checks, token refresh, alerts, and weekly digests.
-- **Telegram bot** with the same operator actions as the web chat.
-- **OAuth connections** for Google and Meta, with encrypted credential storage.
+## Website features
 
-Help Centre inside the app is bilingual (EN / RU). The rest of the product UI is English.
+| Area | What visitors get |
+|------|-------------------|
+| Brand | Agency identity and services |
+| Contact | Path to inquire or start a project |
+| Hosting | Own hostname, separate from the staff app |
 
----
+## Stack
 
-## Website highlights
-
-- Agency brand and service positioning
-- Contact and inquiry path for new clients
-- Separate hostname from the private app (marketing vs operations)
-
----
-
-## Stack (high level)
-
-| Layer | Choice |
-|-------|--------|
+| Layer | Tools |
+|-------|-------|
 | API and jobs | Python, FastAPI, APScheduler |
-| Data | PostgreSQL (pgvector for search), Redis |
-| UI | Server-rendered dashboard with Tailwind |
-| AI | Claude for drafts, briefings, and chat |
-| Embeddings | Voyage for document search |
-| Hosting | Docker Compose on a VPS behind HTTPS |
+| Data | PostgreSQL with pgvector, Redis |
+| UI | Server-rendered pages with Tailwind |
+| Writing and chat | Claude |
+| Document search | Voyage embeddings |
+| Deploy | Docker Compose on a VPS with HTTPS |
 
----
+## Safety rules
 
-## Security posture
-
-- Dashboard login for staff only
-- Secrets and OAuth tokens encrypted at rest
-- No auto-send of client email or ads without an explicit confirm step
-- Mailchimp send and schedule require an admin role plus a typed guard phrase
-- Public marketing site does not expose operator tools
-
----
-
-## Related private work
-
-The production automation codebase is private. This repo is the shareable description of what the website and dashboard do, without deployment secrets or internal credentials.
-
----
+| Rule | Detail |
+|------|--------|
+| Access | Dashboard is staff login only |
+| Secrets | OAuth tokens and API keys are encrypted at rest |
+| Sending | No auto-send of client email or ads without confirm |
+| Mailchimp | Live send needs admin role and a typed confirm phrase |
+| Public site | Does not expose operator tools |
 
 ## License
 
-Documentation in this repository is provided for portfolio and client communication. All product rights remain with WIM Marketing Agency.
+These docs are for portfolio and client communication. Product rights stay with WIM Marketing Agency.

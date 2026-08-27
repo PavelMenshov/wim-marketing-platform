@@ -1,24 +1,24 @@
 # Marketing website
 
-Public brand site for WIM Marketing Agency.
+Public site for WIM Marketing Agency.
 
 **URL:** https://www.wim-marketing-agency.com
 
-## Role
+## Purpose
 
-The website introduces the agency, services, and contact path. It is separate from the staff dashboard so prospects and operators never share the same login surface.
+The site presents the agency, its services, and a contact path. It does not include staff login or operator tools.
 
-## Relationship to the dashboard
+## Website and dashboard
 
-| Concern | Website | Dashboard |
-|---------|---------|-----------|
+| Topic | Website | Dashboard |
+|-------|---------|-----------|
 | Audience | Public | Staff |
-| Content | Brand, services, contact | Operations tools |
-| Auth | None for browsing | Staff login |
+| Content | Brand, services, contact | Daily operations |
+| Auth | Browse without login | Staff login |
 | Host | `www` | `app` |
 
-OAuth callbacks and automation APIs point at the `app` host only.
+OAuth callbacks and automation APIs use the `app` host only.
 
-## Design notes
+## Look and feel
 
-The dashboard visual language follows the agency site (light background, high-contrast type, restrained chrome) so daily tools feel like part of the same brand. Marketing pages stay focused on storytelling and inquiry. The app stays focused on tasks: drafts, inbox, reports, and jobs.
+The dashboard follows the site look: light background, clear type, simple chrome. Marketing pages cover story and contact. The app covers tasks such as drafts, inbox, reports, and jobs.
